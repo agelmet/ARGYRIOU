@@ -37,7 +37,16 @@
     assets/georgina-argyriou.jpg   portrait, 480×640 (also OG/Twitter card).
       Low-resolution phone shot: it is deliberately never rendered wider than
       ~460 CSS px. Swap in a higher-res frame when one exists.
-    assets/apple-touch-icon.png    180×180, cropped from the EL monogram.
+    assets/favicon-32/180/512.png  the real monogram, isolated out of the EN
+      logo (the brown script wordmark and the grey drop shadow are keyed out on
+      a blue-minus-red test) and set on a rounded white tile.
+    assets/apple-touch-icon.png    180×180, same mark, square and opaque —
+      iOS applies its own mask.
+    assets/office-strip.jpg (2000×1100) + office-strip-sm.jpg (1100×927)
+      the hero band. Pre-cropped from office-2.jpg so the browser is never asked
+      to blow the square 800px original up to full-bleed width. Both were
+      Lanczos-resampled with an unsharp pass; the source is still only 800px, so
+      a real high-res frame of that room would be a genuine upgrade.
 
   TODO BEFORE GO-LIVE: replace every https://argyriou.gr occurrence (canonical,
   og:url, hreflang, JSON-LD) with the real papaki domain.
@@ -69,8 +78,10 @@
 <meta name="twitter:description" content="Γνωσιακή συμπεριφορική θεραπεία για άγχος, πανικό και εμμονές. Αθήνα &amp; online, στα Ελληνικά και τα Αγγλικά.">
 <meta name="twitter:image" content="https://argyriou.gr/assets/georgina-argyriou.jpg">
 
-<!-- Purple monogram favicon — temporary until the real mark arrives -->
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%235E2A84'/%3E%3Cpath d='M32 12c7 6 8 13 4 18-4 5-9 4-11-1-2-5 1-12 7-17z' fill='%23A87DC9'/%3E%3Ctext x='32' y='52' font-family='Georgia,serif' font-size='22' fill='%23fff' text-anchor='middle'%3E%CE%A4%CE%91%3C/text%3E%3C/svg%3E">
+<!-- Favicon: the real monogram, lifted out of the English logo (assets/logo-en.jpg) -->
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="180x180" href="assets/favicon-180.png">
+<link rel="icon" type="image/png" sizes="512x512" href="assets/favicon-512.png">
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -378,14 +389,20 @@ h2.h{font-size:clamp(2rem,1.35rem + 2.7vw,3.35rem);margin-bottom:.55em;max-width
 }
 
 .hero-strip{
-  margin-top:clamp(2.4rem,5vw,3.6rem);height:clamp(180px,30vw,320px);
+  margin-top:clamp(2.4rem,5vw,3.6rem);height:clamp(340px,42vw,620px);
   position:relative;overflow:hidden;background:var(--lilac);
 }
-/* over-sized inner layer, nudged by --par (set in JS) for a slow parallax */
+/* over-sized inner layer, nudged by --par (set in JS) for a slow parallax.
+   Source is a pre-cropped wide band (2000×1100) so the browser is not asked to
+   blow up the square 800px original — see assets/office-strip.jpg. */
 .hero-strip i{
   position:absolute;left:0;right:0;top:-14%;height:128%;
-  background:url("assets/office-2.jpg") center 42%/cover no-repeat;
+  background:url("assets/office-strip.jpg") center center/cover no-repeat;
   transform:translate3d(0,var(--par,0px),0) scale(1.02);will-change:transform;
+}
+/* phones get a squarer crop — the strip is close to 1:1 there */
+@media(max-width:700px){
+  .hero-strip i{background-image:url("assets/office-strip-sm.jpg")}
 }
 .hero-strip::after{
   content:"";position:absolute;inset:0;
@@ -428,13 +445,19 @@ h2.h{font-size:clamp(2rem,1.35rem + 2.7vw,3.35rem);margin-bottom:.55em;max-width
 
 /* ── about ─────────────────────────────────────────────────────────── */
 .about{display:grid;gap:clamp(2.2rem,5vw,4.2rem);align-items:start}
-@media(min-width:900px){.about{grid-template-columns:minmax(0,.82fr) minmax(0,1fr)}}
+/* desktop: the two columns are balanced against each other and vertically
+   centred, so the portrait reads as a peer of the text rather than a tall
+   column with dead space under it */
+@media(min-width:900px){
+  .about{grid-template-columns:minmax(0,.86fr) minmax(0,1fr);align-items:center}
+}
 /* portrait is a low-res phone shot — capped so it is never upscaled past ~460px */
 .portrait{
   position:relative;border-radius:var(--r);overflow:hidden;background:var(--lilac);
   max-width:460px;box-shadow:var(--shadow-lg);
   transition:box-shadow .6s var(--ease),transform .6s var(--ease);
 }
+@media(min-width:900px){.portrait{margin-left:auto}}
 @media(max-width:899px){.portrait{margin-inline:auto}}
 /* offset outline frame — drawn behind, slides into register on reveal */
 .portrait::before{
@@ -455,13 +478,29 @@ h2.h{font-size:clamp(2rem,1.35rem + 2.7vw,3.35rem);margin-bottom:.55em;max-width
   font-size:.83rem;letter-spacing:.05em;
 }
 .about-body p+p{margin-top:0}
-.creds{margin-top:2.2rem;border-top:1px solid var(--line);padding-top:1.6rem}
+.creds{
+  margin-top:clamp(2.6rem,5vw,3.8rem);
+  border-top:1px solid var(--line);padding-top:1.8rem;
+}
 .creds h3{font-size:1.32rem;margin-bottom:1rem;color:var(--purple)}
+/* two even columns of credentials once there is room — keeps the block wide
+   and shallow instead of a long single list */
+@media(min-width:820px){
+  .creds ul{
+    display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+    column-gap:clamp(2rem,4vw,3.4rem);
+  }
+}
 .creds li{
   position:relative;padding:.52rem 0 .52rem 1.85rem;font-size:.945rem;
   border-bottom:1px solid rgba(94,42,132,.08);
 }
 .creds li:last-child{border-bottom:0}
+@media(min-width:820px){
+  /* with two columns the "last" item is no longer the only borderless one */
+  .creds li:last-child{border-bottom:1px solid rgba(94,42,132,.08)}
+  .creds li:nth-last-child(-n+2){border-bottom:0}
+}
 .creds li::before{
   content:"";position:absolute;left:.15rem;top:1.12em;width:7px;height:7px;border-radius:50%;
   background:var(--accent);opacity:.55;
@@ -1136,9 +1175,14 @@ body.lock{overflow:hidden}
            data-en="In our sessions you won't find ready-made answers or judgement. You'll find someone who listens closely, asks questions, and builds tools with you that work in your own daily life — in Greek or in English, at the office or from wherever you are."
            data-advon-edit="about.p3">Στις συνεδρίες μου δεν θα βρεις έτοιμες απαντήσεις ούτε κριτική. Θα βρεις κάποια που ακούει προσεκτικά, ρωτάει, και χτίζει μαζί σου εργαλεία που δουλεύουν στη δική σου καθημερινότητα — στα Ελληνικά ή στα Αγγλικά, στο γραφείο ή από όπου κι αν βρίσκεσαι.</p>
 
-        <div class="creds">
-          <h3 data-el="Σπουδές &amp; πιστοποιήσεις" data-en="Training &amp; credentials">Σπουδές &amp; πιστοποιήσεις</h3>
-          <ul data-advon-edit="about.credentials">
+      </div>
+    </div>
+
+    <!-- credentials sit full-width UNDER the two columns: keeping them inside
+         .about-body made the text column roughly twice the portrait's height -->
+    <div class="creds rv d1">
+      <h3 data-el="Σπουδές &amp; πιστοποιήσεις" data-en="Training &amp; credentials">Σπουδές &amp; πιστοποιήσεις</h3>
+      <ul data-advon-edit="about.credentials">
             <li data-el-html="<strong>Γεωργία (Τζωρτζίνα) Αργυρίου</strong> — Ψυχολόγος, Ψυχοθεραπεύτρια"
                 data-en-html="<strong>Georgia (Georgina) Argyriou</strong> — Psychologist, Psychotherapist"><strong>Γεωργία (Τζωρτζίνα) Αργυρίου</strong> — Ψυχολόγος, Ψυχοθεραπεύτρια</li>
             <li data-el-html="<strong>BSc Ψυχολογίας</strong>" data-en-html="<strong>BSc in Psychology</strong>"><strong>BSc Ψυχολογίας</strong></li>
@@ -1154,9 +1198,7 @@ body.lock{overflow:hidden}
                 data-en-html="<strong>Clinical placement</strong> — Behaviour Therapy Unit, Athens Mental Health Centre (E.KE.PSY.E.)"><strong>Κλινική πρακτική άσκηση</strong> — Μονάδα Θεραπείας Συμπεριφοράς, Δομή Ψυχικής Υγείας Αθήνας (Ε.ΚΕ.Ψ.Υ.Ε.)</li>
             <li data-el-html="<strong>Γλώσσες συνεδριών</strong> — Ελληνικά &amp; Αγγλικά"
                 data-en-html="<strong>Session languages</strong> — Greek &amp; English"><strong>Γλώσσες συνεδριών</strong> — Ελληνικά &amp; Αγγλικά</li>
-          </ul>
-        </div>
-      </div>
+      </ul>
     </div>
   </div>
 </section>
