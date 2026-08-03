@@ -16,7 +16,7 @@
     Nav           = minimal hamburger-always (full-screen overlay at every width)
     Services      = cards grid  [pinned by brief for «Σε τι μπορώ να βοηθήσω»]
                     + numbered editorial list for «Συνεδρίες» (the divergence)
-    Social proof  = floating chips (rating dimensions) around one real quote
+    Social proof  = floating chips (rating dimensions) around real quotes slider
     Contact       = three direct-contact cards + purple detail panel + map
                     (no enquiry form — removed by client request 29/07/2026)
 
@@ -34,7 +34,7 @@
       are painted with mix-blend-mode:multiply so the white drops out over any
       light surface and the purple mark survives. Never place them on a dark
       surface — the footer uses a text wordmark for exactly that reason.
-    assets/georgina-argyriou.jpg   portrait, 480×640 (also OG/Twitter card).
+    assets/georgina-argyriou.jpg  portrait, 480×640 (also OG/Twitter card).
       Low-resolution phone shot: it is deliberately never rendered wider than
       ~460 CSS px. Swap in a higher-res frame when one exists.
     assets/favicon-32/180/512.png  the real monogram, isolated out of the EN
@@ -70,12 +70,12 @@
 <meta property="og:locale:alternate" content="en_GB">
 <meta property="og:url" content="https://argyriou.gr/">
 <meta property="og:title" content="Τζωρτζίνα Αργυρίου — Ψυχολόγος Ψυχοθεραπεύτρια | Αθήνα &amp; Online">
-<meta property="og:description" content="Γνωσιακή συμπεριφορική θεραπεία για άγχος, πανικό και εμμονές. Συνεδρίες δια ζώσης στην Αθήνα και μέσω βιντεοκλήσης, στα Ελληνικά και τα Αγγλικά.">
+<meta property="og:description" content="Γνωσιακή συμπεριφορική θεραπεία για άγχος, πανικό και παρεμβατικές σκέψεις. Συνεδρίες δια ζώσης στην Αθήνα και μέσω βιντεοκλήσης, στα Ελληνικά και τα Αγγλικά.">
 <meta property="og:image" content="https://argyriou.gr/assets/georgina-argyriou.jpg">
 <meta property="og:image:alt" content="Τζωρτζίνα Αργυρίου, ψυχολόγος – ψυχοθεραπεύτρια">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Τζωρτζίνα Αργυρίου — Ψυχολόγος Ψυχοθεραπεύτρια">
-<meta name="twitter:description" content="Γνωσιακή συμπεριφορική θεραπεία για άγχος, πανικό και εμμονές. Αθήνα &amp; online, στα Ελληνικά και τα Αγγλικά.">
+<meta name="twitter:description" content="Γνωσιακή συμπεριφορική θεραπεία για άγχος, πανικό και παρεμβατικές σκέψεις. Αθήνα &amp; online, στα Ελληνικά και τα Αγγλικά.">
 <meta name="twitter:image" content="https://argyriou.gr/assets/georgina-argyriou.jpg">
 
 <!-- Favicon: the real monogram, lifted out of the English logo (assets/logo-en.jpg) -->
@@ -397,12 +397,12 @@ h2.h{font-size:clamp(2rem,1.35rem + 2.7vw,3.35rem);margin-bottom:.55em;max-width
    blow up the square 800px original — see assets/office-strip.jpg. */
 .hero-strip i{
   position:absolute;left:0;right:0;top:-14%;height:128%;
-  background:url("assets/office-strip.jpg") center center/cover no-repeat;
+  background:url("https://raw.githubusercontent.com/agelmet/ARGYRIOU/2c108df3b5a6b1f1bc6b2a53118d45346f57b2b7/arg1.jpg") center center/cover no-repeat;
   transform:translate3d(0,var(--par,0px),0) scale(1.02);will-change:transform;
 }
 /* phones get a squarer crop — the strip is close to 1:1 there */
 @media(max-width:700px){
-  .hero-strip i{background-image:url("assets/office-strip-sm.jpg")}
+  .hero-strip i{background-image:url("https://raw.githubusercontent.com/agelmet/ARGYRIOU/2c108df3b5a6b1f1bc6b2a53118d45346f57b2b7/arg1.jpg")}
 }
 .hero-strip::after{
   content:"";position:absolute;inset:0;
@@ -677,7 +677,7 @@ h2.h{font-size:clamp(2rem,1.35rem + 2.7vw,3.35rem);margin-bottom:.55em;max-width
 }
 .gal-btn:hover::after,.gal-btn:focus-visible::after{opacity:1;transform:none}
 
-/* ── social proof : floating chips ─────────────────────────────────── */
+/* ── social proof : floating chips & slider ────────────────────────── */
 .proof{position:relative;overflow:hidden}
 /* soft lilac halo behind the quote, breathing very slowly */
 .proof::before{
@@ -688,8 +688,17 @@ h2.h{font-size:clamp(2rem,1.35rem + 2.7vw,3.35rem);margin-bottom:.55em;max-width
 }
 @keyframes breathe{from{opacity:.55;transform:translate(-50%,-50%) scale(.92)}to{opacity:1;transform:translate(-50%,-50%) scale(1.08)}}
 .proof>.wrap{position:relative;z-index:1}
+
+.proof-slider{
+  display:flex;overflow-x:auto;scroll-snap-type:x mandatory;
+  max-width:44rem;margin:clamp(2.2rem,5vw,3.4rem) auto 0;position:relative;z-index:2;
+  scrollbar-width:thin;scrollbar-color:var(--purple) transparent;
+}
+.proof-slider::-webkit-scrollbar{height:4px;}
+.proof-slider::-webkit-scrollbar-track{background:transparent;}
+.proof-slider::-webkit-scrollbar-thumb{background:var(--purple);border-radius:4px;}
 .proof-quote{
-  max-width:44rem;margin:clamp(2.2rem,5vw,3.4rem) auto 0;text-align:center;position:relative;z-index:2;
+  flex:0 0 100%;scroll-snap-align:center;text-align:center;padding:0 1rem 1.5rem;
 }
 .proof-quote blockquote{
   margin:0;font-family:var(--serif);font-weight:300;font-style:italic;
@@ -701,6 +710,7 @@ h2.h{font-size:clamp(2rem,1.35rem + 2.7vw,3.35rem);margin-bottom:.55em;max-width
   display:block;margin-top:1.3rem;font-family:var(--sans);font-style:normal;
   font-size:.8rem;letter-spacing:.14em;font-weight:600;color:var(--body);
 }
+
 .chips{
   display:flex;flex-wrap:wrap;justify-content:center;gap:.7rem;
   margin:clamp(2.4rem,5vw,3.6rem) auto 0;max-width:56rem;
@@ -1032,7 +1042,7 @@ body.lock{overflow:hidden}
 <header class="hdr" id="hdr">
   <div class="hdr-in">
     <a class="brand" href="#arxi" aria-label="Τζωρτζίνα Αργυρίου — αρχική">
-      <img id="brandLogo" src="assets/logo-el.jpg" width="1330" height="526" fetchpriority="high"
+      <img id="brandLogo" src="https://raw.githubusercontent.com/agelmet/ARGYRIOU/2c108df3b5a6b1f1bc6b2a53118d45346f57b2b7/lgoogegr.jpg" width="1330" height="526" fetchpriority="high"
            alt="Τζωρτζίνα Αργυρίου, ψυχολόγος – ψυχοθεραπεύτρια"
            data-alt-el="Τζωρτζίνα Αργυρίου, ψυχολόγος – ψυχοθεραπεύτρια"
            data-alt-en="Georgina Argyriou, psychologist – psychotherapist"
@@ -1163,9 +1173,9 @@ body.lock{overflow:hidden}
             data-en="I'm glad you're here."
             data-advon-edit="about.title">Χαίρομαι που είσαι εδώ.</h2>
 
-        <p data-el="Με λένε Τζωρτζίνα και είμαι ψυχολόγος – ψυχοθεραπεύτρια. Δουλεύω κυρίως με ενήλικες που ζουν με άγχος, κρίσεις πανικού, εμμονικές σκέψεις ή δύσκολες εμπειρίες που ακόμη τους βαραίνουν — και ψάχνουν έναν πρακτικό τρόπο να τα διαχειριστούν."
+        <p data-el="Με λένε Τζωρτζίνα και είμαι ψυχολόγος – ψυχοθεραπεύτρια. Δουλεύω κυρίως με ενήλικες που ζουν με άγχος, κρίσεις πανικού, παρεμβατικές σκέψεις ή δύσκολες εμπειρίες που ακόμη τους βαραίνουν — και ψάχνουν έναν πρακτικό τρόπο να τα διαχειριστούν."
            data-en="My name is Georgina and I'm a psychologist and psychotherapist. I work mainly with adults living with anxiety, panic attacks, intrusive thoughts or difficult experiences that still weigh on them — and who are looking for a practical way to handle them."
-           data-advon-edit="about.p1">Με λένε Τζωρτζίνα και είμαι ψυχολόγος – ψυχοθεραπεύτρια. Δουλεύω κυρίως με ενήλικες που ζουν με άγχος, κρίσεις πανικού, εμμονικές σκέψεις ή δύσκολες εμπειρίες που ακόμη τους βαραίνουν — και ψάχνουν έναν πρακτικό τρόπο να τα διαχειριστούν.</p>
+           data-advon-edit="about.p1">Με λένε Τζωρτζίνα και είμαι ψυχολόγος – ψυχοθεραπεύτρια. Δουλεύω κυρίως με ενήλικες που ζουν με άγχος, κρίσεις πανικού, παρεμβατικές σκέψεις ή δύσκολες εμπειρίες που ακόμη τους βαραίνουν — και ψάχνουν έναν πρακτικό τρόπο να τα διαχειριστούν.</p>
 
         <p data-el="Η εκπαίδευσή μου είναι στη Γνωσιακή Συμπεριφορική Θεραπεία (CBT). Ολοκληρώνω το μεταπτυχιακό μου στην Κλινική Ψυχολογία στο Hellenic American University, ενώ έχω εξειδικευτεί στη Θεραπεία Συμπεριφοράς για τις διαταραχές άγχους, την ιδεοψυχαναγκαστική και τη μετατραυματική διαταραχή στο Ε.Π.Ι.Ψ.Υ. Την κλινική μου άσκηση την έκανα στη Μονάδα Θεραπείας Συμπεριφοράς της Δομής Ψυχικής Υγείας Αθήνας (Ε.ΚΕ.Ψ.Υ.Ε.)."
            data-en="My training is in Cognitive Behavioural Therapy (CBT). I am completing my MSc in Clinical Psychology at Hellenic American University, and I specialised in Behaviour Therapy for anxiety disorders, OCD and post-traumatic stress at E.P.I.PSY. I completed my clinical placement at the Behaviour Therapy Unit of the Athens Mental Health Centre (E.KE.PSY.E.)."
@@ -1378,8 +1388,8 @@ body.lock{overflow:hidden}
     </ol>
 
     <div class="ses-note rv">
-      <p data-el="Επικοινώνησε για κόστος συνεδρίας" data-en="Get in touch for session fees"
-         data-advon-edit="sessions.pricing">Επικοινώνησε για κόστος συνεδρίας</p>
+      <p data-el="Για πληροφορίες σχετικά με το κόστος και τη διαθεσιμότητα, επικοινώνησε μαζί μου." data-en="For information on fees and availability, please get in touch."
+         data-advon-edit="sessions.pricing">Για πληροφορίες σχετικά με το κόστος και τη διαθεσιμότητα, επικοινώνησε μαζί μου.</p>
       <a class="btn btn--p" href="#epikoinonia">
         <span data-el="Επικοινώνησε μαζί μου" data-en="Get in touch">Επικοινώνησε μαζί μου</span>
       </a>
@@ -1404,7 +1414,7 @@ body.lock{overflow:hidden}
                 aria-label="Άνοιγμα φωτογραφίας: ο καθιστικός χώρος με τον καναπέ"
                 data-label-el="Άνοιγμα φωτογραφίας: ο καθιστικός χώρος με τον καναπέ"
                 data-label-en="Open photo: the seating area with the sofa">
-          <img src="assets/office-2.jpg" width="800" height="796" loading="lazy" decoding="async"
+          <img src="https://raw.githubusercontent.com/agelmet/ARGYRIOU/2c108df3b5a6b1f1bc6b2a53118d45346f57b2b7/arg1.jpg" width="800" height="796" loading="lazy" decoding="async"
                alt="Ο χώρος θεραπείας: καναπές, πολυθρόνα και λευκό χαλί μπροστά από μπαλκονόπορτα"
                data-alt-el="Ο χώρος θεραπείας: καναπές, πολυθρόνα και λευκό χαλί μπροστά από μπαλκονόπορτα"
                data-alt-en="The therapy room: sofa, armchair and white rug in front of a balcony door"
@@ -1416,7 +1426,7 @@ body.lock{overflow:hidden}
                 aria-label="Άνοιγμα φωτογραφίας: γωνιά με καναπέ και μαξιλάρια"
                 data-label-el="Άνοιγμα φωτογραφίας: γωνιά με καναπέ και μαξιλάρια"
                 data-label-en="Open photo: corner with sofa and cushions">
-          <img src="assets/office-1.jpg" width="800" height="784" loading="lazy" decoding="async"
+          <img src="https://raw.githubusercontent.com/agelmet/ARGYRIOU/2c108df3b5a6b1f1bc6b2a53118d45346f57b2b7/arg2.jpg" width="800" height="784" loading="lazy" decoding="async"
                alt="Γωνιά του γραφείου με σκούρο καναπέ, μουσταρδί μαξιλάρι και μικρό ξύλινο τραπεζάκι"
                data-alt-el="Γωνιά του γραφείου με σκούρο καναπέ, μουσταρδί μαξιλάρι και μικρό ξύλινο τραπεζάκι"
                data-alt-en="Corner of the office with a dark sofa, mustard cushion and a small wooden side table"
@@ -1428,7 +1438,7 @@ body.lock{overflow:hidden}
                 aria-label="Άνοιγμα φωτογραφίας: το φυσικό φως από τη μπαλκονόπορτα"
                 data-label-el="Άνοιγμα φωτογραφίας: το φυσικό φως από τη μπαλκονόπορτα"
                 data-label-en="Open photo: natural light from the balcony door">
-          <img src="assets/office-3.jpg" width="800" height="791" loading="lazy" decoding="async"
+          <img src="https://raw.githubusercontent.com/agelmet/ARGYRIOU/2c108df3b5a6b1f1bc6b2a53118d45346f57b2b7/arg3.jpg" width="800" height="791" loading="lazy" decoding="async"
                alt="Μπαλκονόπορτα με λευκές κουρτίνες που αφήνουν το φως να μπει στον χώρο"
                data-alt-el="Μπαλκονόπορτα με λευκές κουρτίνες που αφήνουν το φως να μπει στον χώρο"
                data-alt-en="Balcony door with sheer white curtains letting light into the room"
@@ -1439,7 +1449,7 @@ body.lock{overflow:hidden}
   </div>
 </section>
 
-<!-- ══ 7. ΑΞΙΟΛΟΓΗΣΕΙΣ — floating chips ════════════════════════════ -->
+<!-- ══ 7. ΑΞΙΟΛΟΓΗΣΕΙΣ — floating chips & slider ═══════════════════ -->
 <section class="sec sec--lilac sec--center proof" id="axiologiseis" aria-labelledby="proofH">
   <div class="wrap">
     <p class="eyebrow eyebrow--c rv" data-el="ΑΞΙΟΛΟΓΗΣΕΙΣ" data-en="REVIEWS">ΑΞΙΟΛΟΓΗΣΕΙΣ</p>
@@ -1447,14 +1457,66 @@ body.lock{overflow:hidden}
         data-en="What the people who've sat across from me say"
         data-advon-edit="proof.title">Τι λένε όσοι έχουν καθίσει απέναντί μου</h2>
 
-    <!-- Only ONE published review text was available to paraphrase (Alexia,
-         24/07/2026). The remaining cards were deliberately NOT invented —
-         see the delivery notes. Add more here once the client approves them. -->
-    <div class="proof-quote rv rv--s d1" data-advon-edit="proof.quote">
-      <blockquote data-el="Διερεύνησε την περίπτωσή μου σε βάθος και έφυγα από τις συνεδρίες με νέες οπτικές και πράγματα που μπορούσα πραγματικά να εφαρμόσω."
-                  data-en="She explored my situation in depth, and I left our sessions with new perspectives and things I could genuinely put into practice.">Διερεύνησε την περίπτωσή μου σε βάθος και έφυγα από τις συνεδρίες με νέες οπτικές και πράγματα που μπορούσα πραγματικά να εφαρμόσω.</blockquote>
-      <cite class="proof-cite" data-el="ΑΛΕΞΙΑ — ΑΞΙΟΛΟΓΗΣΗ ΣΤΟ DOCTORANYTIME"
-            data-en="ALEXIA — REVIEW ON DOCTORANYTIME">ΑΛΕΞΙΑ — ΑΞΙΟΛΟΓΗΣΗ ΣΤΟ DOCTORANYTIME</cite>
+    <div class="proof-slider rv rv--s d1" data-advon-edit="proof.quote">
+      <div class="proof-quote">
+        <blockquote data-el="Η κυρία Αργυρίου είναι πολύ καλή ψυχολόγος ! ξεκίνησα θεραπεία μαζί της πριν από ένα χρόνο και μέσω της θεραπείας και της συζήτησης με έκανε να νιώσω ότι έχω βοήθεια και ότι μπορώ να αντιμετωπίσω τα ψυχολογικά μου προβλήματα και να γίνω καλύτερος άνθρωπος. Πραγματικά έχω δει μεγάλη διαφορά στην συμπεριφορά μου και στο πως αντιμετωπίζω τα προβλήματα μου. Είμαι πολύ ευχαριστημένος μαζί της και δεν θα την άλλαζα από ψυχολόγο μου για κανέναν λόγο ."
+                    data-en="Mrs. Argyriou is a very good psychologist! I started therapy with her a year ago and through therapy and discussion she made me feel that I have help and that I can face my psychological problems and become a better person. I have really seen a big difference in my behavior and how I face my problems. I am very satisfied with her and I wouldn't trade her as my psychologist for any reason.">Η κυρία Αργυρίου είναι πολύ καλή ψυχολόγος ! ξεκίνησα θεραπεία μαζί της πριν από ένα χρόνο και μέσω της θεραπείας και της συζήτησης με έκανε να νιώσω ότι έχω βοήθεια και ότι μπορώ να αντιμετωπίσω τα ψυχολογικά μου προβλήματα και να γίνω καλύτερος άνθρωπος. Πραγματικά έχω δει μεγάλη διαφορά στην συμπεριφορά μου και στο πως αντιμετωπίζω τα προβλήματα μου. Είμαι πολύ ευχαριστημένος μαζί της και δεν θα την άλλαζα από ψυχολόγο μου για κανέναν λόγο .</blockquote>
+        <cite class="proof-cite" data-el="PANAGIOTIS — 24 ΙΟΥΛΙΟΥ 2026 (10.0)" data-en="PANAGIOTIS — 24 JULY 2026 (10.0)">PANAGIOTIS — 24 ΙΟΥΛΙΟΥ 2026 (10.0)</cite>
+      </div>
+      
+      <div class="proof-quote">
+        <blockquote data-el="Οι συνεδρίες ήταν ουσιαστικές, οργανωμένες και με βοήθησαν να αποκτήσω νέες οπτικές και πρακτικά εργαλεία για τη διαχείριση των προκλήσεών μου. Τη συνιστώ ανεπιφύλακτα σε όποιον αναζητά έναν επαγγελματία με ενσυναίσθηση, επαγγελματισμό και ουσιαστική υποστήριξη."
+                    data-en="The sessions were meaningful, organized and helped me gain new perspectives and practical tools for managing my challenges. I highly recommend her to anyone looking for a professional with empathy, professionalism and substantial support.">Οι συνεδρίες ήταν ουσιαστικές, οργανωμένες και με βοήθησαν να αποκτήσω νέες οπτικές και πρακτικά εργαλεία για τη διαχείριση των προκλήσεών μου. Τη συνιστώ ανεπιφύλακτα σε όποιον αναζητά έναν επαγγελματία με ενσυναίσθηση, επαγγελματισμό και ουσιαστική υποστήριξη.</blockquote>
+        <cite class="proof-cite" data-el="ALEXIA — 24 ΙΟΥΛΙΟΥ 2026 (10.0)" data-en="ALEXIA — 24 JULY 2026 (10.0)">ALEXIA — 24 ΙΟΥΛΙΟΥ 2026 (10.0)</cite>
+      </div>
+
+      <div class="proof-quote">
+        <blockquote data-el="Η εμπειρία μου ήταν εξαιρετική. Από την πρώτη συνεδρία ένιωσα ότι βρισκόμουν σε ένα ασφαλές και υποστηρικτικό περιβάλλον, όπου μπορούσα να εκφραστώ χωρίς φόβο ή κριτική. Ο/Η ψυχοθεραπευτής/τρια άκουγε με προσοχή, έδειχνε πραγματικό ενδιαφέρον και με βοήθησε να κατανοήσω καλύτερα τις δυσκολίες που αντιμετώπιζα."
+                    data-en="My experience was excellent. From the first session I felt I was in a safe and supportive environment, where I could express myself without fear or judgment. The psychotherapist listened carefully, showed genuine interest and helped me better understand the difficulties I was facing.">Η εμπειρία μου ήταν εξαιρετική. Από την πρώτη συνεδρία ένιωσα ότι βρισκόμουν σε ένα ασφαλές και υποστηρικτικό περιβάλλον, όπου μπορούσα να εκφραστώ χωρίς φόβο ή κριτική. Ο/Η ψυχοθεραπευτής/τρια άκουγε με προσοχή, έδειχνε πραγματικό ενδιαφέρον και με βοήθησε να κατανοήσω καλύτερα τις δυσκολίες που αντιμετώπιζα.</blockquote>
+        <cite class="proof-cite" data-el="ALEXIA — 24 ΙΟΥΛΙΟΥ 2026 (10.0)" data-en="ALEXIA — 24 JULY 2026 (10.0)">ALEXIA — 24 ΙΟΥΛΙΟΥ 2026 (10.0)</cite>
+      </div>
+
+      <div class="proof-quote">
+        <blockquote data-el="Προσεγγίζει πάντα τις συνεδρίες με κατανόηση, λεπτότητα,μέθοδο κι επαγγελματισμό. Νιώθεις ασφάλεια και υποστήριξη εντός κι εκτός των συνεδρίων."
+                    data-en="She always approaches sessions with understanding, delicacy, method and professionalism. You feel safe and supported both inside and outside the sessions.">Προσεγγίζει πάντα τις συνεδρίες με κατανόηση, λεπτότητα,μέθοδο κι επαγγελματισμό. Νιώθεις ασφάλεια και υποστήριξη εντός κι εκτός των συνεδρίων.</blockquote>
+        <cite class="proof-cite" data-el="LAB — 08 ΙΟΥΛΙΟΥ 2026 (10.0)" data-en="LAB — 08 JULY 2026 (10.0)">LAB — 08 ΙΟΥΛΙΟΥ 2026 (10.0)</cite>
+      </div>
+
+      <div class="proof-quote">
+        <blockquote data-el="εεξαιρετικος επαγγελματιας . ενιωσα απολυτη ασφαλεια κ ανεση να εκφραστω απο την πρωτη στιγμη. την συστηνω ανεπιφυλακτα"
+                    data-en="Excellent professional. I felt absolute safety and comfort to express myself from the first moment. I highly recommend her.">εεξαιρετικος επαγγελματιας . ενιωσα απολυτη ασφαλεια κ ανεση να εκφραστω απο την πρωτη στιγμη. την συστηνω ανεπιφυλακτα</blockquote>
+        <cite class="proof-cite" data-el="HAR — 07 ΙΟΥΛΙΟΥ 2026 (10.0)" data-en="HAR — 07 JULY 2026 (10.0)">HAR — 07 ΙΟΥΛΙΟΥ 2026 (10.0)</cite>
+      </div>
+
+      <div class="proof-quote">
+        <blockquote data-el="Εξαιρετική επαγγελματίας, με γνώση του αντικειμένου της αλλά και τρομερή ευαισθησία και κατανόηση. Εμπνέει ασφάλεια να μιλήσω ανοιχτά στις συνεδρίες μας!"
+                    data-en="Excellent professional, with knowledge of her field but also tremendous sensitivity and understanding. She inspires the safety to speak openly in our sessions!">Εξαιρετική επαγγελματίας, με γνώση του αντικειμένου της αλλά και τρομερή ευαισθησία και κατανόηση. Εμπνέει ασφάλεια να μιλήσω ανοιχτά στις συνεδρίες μας!</blockquote>
+        <cite class="proof-cite" data-el="JENNIFER — 08 ΑΠΡΙΛΙΟΥ 2026 (10.0)" data-en="JENNIFER — 08 APRIL 2026 (10.0)">JENNIFER — 08 ΑΠΡΙΛΙΟΥ 2026 (10.0)</cite>
+      </div>
+
+      <div class="proof-quote">
+        <blockquote data-el="Έχω μόνο καλά λόγια να πω για την εμπειρία μου με τη Γεωργία. Με έχει βοηθήσει απίστευτα και τα χαρακτηριστικά που εκτίμησα περισσότερο είναι το πόσο μη επικριτική και με ενσυναίσθηση είναι. Με βοήθησε να ανοιχτώ και να την εμπιστευτώ."
+                    data-en="I have only good things to say about my experience with Georgina. She’s been incredibly helpful to me and the qualities I’ve appreciated the most about her was how non-judgmental and empathetic she is. It has helped me open up and trust her.">I have only good things to say about my experience with Georgina. She’s been incredibly helpful to me and the qualities I’ve appreciated the most about her was how non-judgmental and empathetic she is. It has helped me open up and trust her.</blockquote>
+        <cite class="proof-cite" data-el="VASILIKI — 08 ΑΠΡΙΛΙΟΥ 2026 (10.0)" data-en="VASILIKI — 08 APRIL 2026 (10.0)">VASILIKI — 08 ΑΠΡΙΛΙΟΥ 2026 (10.0)</cite>
+      </div>
+
+      <div class="proof-quote">
+        <blockquote data-el="Η Γεωργία ξεχωρίζει για τον επαγγελματισμό της, την ενσυναίσθηση, την ψυχραιμία αλλά και την κατάρτιση της."
+                    data-en="Georgia stands out for her professionalism, empathy, composure and expertise.">Η Γεωργία ξεχωρίζει για τον επαγγελματισμό της, την ενσυναίσθηση, την ψυχραιμία αλλά και την κατάρτιση της.</blockquote>
+        <cite class="proof-cite" data-el="SOFIA-XENI — 07 ΑΠΡΙΛΙΟΥ 2026 (10.0)" data-en="SOFIA-XENI — 07 APRIL 2026 (10.0)">SOFIA-XENI — 07 ΑΠΡΙΛΙΟΥ 2026 (10.0)</cite>
+      </div>
+
+      <div class="proof-quote">
+        <blockquote data-el="Πολύ καλή και ανθρώπινη επαγγελματίας. Τη συστήνω"
+                    data-en="Very good and humane professional. I recommend her.">Πολύ καλή και ανθρώπινη επαγγελματίας. Τη συστήνω</blockquote>
+        <cite class="proof-cite" data-el="VASILIKI — 06 ΑΠΡΙΛΙΟΥ 2026 (10.0)" data-en="VASILIKI — 06 APRIL 2026 (10.0)">VASILIKI — 06 ΑΠΡΙΛΙΟΥ 2026 (10.0)</cite>
+      </div>
+
+      <div class="proof-quote">
+        <blockquote data-el="Με έκανε να νιώσω άνεση κσι εμπιστοσυνη , πολυ σημαντικο ! Μεθοδική και συνεπής!"
+                    data-en="She made me feel comfortable and trusting, very important! Methodical and consistent!">Με έκανε να νιώσω άνεση κσι εμπιστοσυνη , πολυ σημαντικο ! Μεθοδική και συνεπής!</blockquote>
+        <cite class="proof-cite" data-el="LEFTER — 06 ΑΠΡΙΛΙΟΥ 2026 (10.0)" data-en="LEFTER — 06 APRIL 2026 (10.0)">LEFTER — 06 ΑΠΡΙΛΙΟΥ 2026 (10.0)</cite>
+      </div>
     </div>
 
     <ul class="chips rv d2" data-advon-edit="proof.chips">
@@ -1790,7 +1852,7 @@ body.lock{overflow:hidden}
   "description": "Ψυχολόγος – ψυχοθεραπεύτρια στην Αθήνα. Γνωσιακή συμπεριφορική θεραπεία (CBT) για αγχώδεις διαταραχές, κρίσεις πανικού, αγοραφοβία, ιδεοψυχαναγκαστική και μετατραυματική διαταραχή, κατάθλιψη και τριχοτιλλομανία. Συνεδρίες δια ζώσης και μέσω βιντεοκλήσης.",
   "url": "https://argyriou.gr/",
   "image": "https://argyriou.gr/assets/georgina-argyriou.jpg",
-  "logo": "https://argyriou.gr/assets/logo-el.jpg",
+  "logo": "https://raw.githubusercontent.com/agelmet/ARGYRIOU/2c108df3b5a6b1f1bc6b2a53118d45346f57b2b7/lgoogegr.jpg",
   "telephone": "+302107114156",
   "medicalSpecialty": "Psychiatric",
   "priceRange": "$$",
@@ -1856,12 +1918,12 @@ body.lock{overflow:hidden}
     el: {
       title: "Τζωρτζίνα Αργυρίου — Ψυχολόγος Ψυχοθεραπεύτρια | Αθήνα & Online",
       desc: "Τζωρτζίνα Αργυρίου, ψυχολόγος – ψυχοθεραπεύτρια στην Αθήνα. Γνωσιακή συμπεριφορική θεραπεία (CBT) για άγχος, πανικό, ιδεοψυχαναγκαστική και μετατραυματική διαταραχή. Συνεδρίες δια ζώσης και online, στα Ελληνικά και τα Αγγλικά.",
-      locale: "el_GR", logo: "assets/logo-el.jpg"
+      locale: "el_GR", logo: "https://raw.githubusercontent.com/agelmet/ARGYRIOU/2c108df3b5a6b1f1bc6b2a53118d45346f57b2b7/lgoogegr.jpg"
     },
     en: {
       title: "Georgina Argyriou — Psychologist & Psychotherapist | Athens & Online",
       desc: "Georgina Argyriou, English-speaking psychologist and psychotherapist in Athens. Cognitive behavioural therapy (CBT) for anxiety, panic, OCD and post-traumatic stress. Sessions in person and online, in Greek and English.",
-      locale: "en_GB", logo: "assets/logo-en.jpg"
+      locale: "en_GB", logo: "https://raw.githubusercontent.com/agelmet/ARGYRIOU/2c108df3b5a6b1f1bc6b2a53118d45346f57b2b7/lgoooen.jpg"
     }
   };
 
@@ -2026,126 +2088,4 @@ body.lock{overflow:hidden}
   lb.addEventListener("click", function (e) { if (e.target === lb) closeLb(); });
 
   // keep the lightbox caption in the active language
-  document.addEventListener("langchange", function () {
-    if (lb.dataset.open === "true") paint();
-  });
-
-  // swipe: horizontal to change, vertical to dismiss
-  var sx = 0, sy = 0;
-  lb.addEventListener("touchstart", function (e) {
-    sx = e.changedTouches[0].clientX; sy = e.changedTouches[0].clientY;
-  }, { passive: true });
-  lb.addEventListener("touchend", function (e) {
-    var dx = e.changedTouches[0].clientX - sx, dy = e.changedTouches[0].clientY - sy;
-    if (Math.abs(dx) > 55 && Math.abs(dx) > Math.abs(dy)) { step(dx < 0 ? 1 : -1); }
-    else if (Math.abs(dy) > 75) { closeLb(); }
-  }, { passive: true });
-
-  /* ── keyboard: Esc + focus trap for both overlays ───────────────── */
-  var FOCUSABLE = 'a[href],button:not([disabled]),input:not([disabled]),textarea:not([disabled]),select:not([disabled]),[tabindex]:not([tabindex="-1"])';
-
-  document.addEventListener("keydown", function (e) {
-    var lbOpen = lb.dataset.open === "true", mOpen = menu.dataset.open === "true";
-    if (!lbOpen && !mOpen) return;
-
-    if (e.key === "Escape") { e.preventDefault(); lbOpen ? closeLb() : closeMenu(); return; }
-    if (lbOpen && e.key === "ArrowLeft") { e.preventDefault(); step(-1); return; }
-    if (lbOpen && e.key === "ArrowRight") { e.preventDefault(); step(1); return; }
-
-    if (e.key === "Tab") {
-      var box = lbOpen ? lb : menu,
-          items = Array.prototype.filter.call(box.querySelectorAll(FOCUSABLE), function (n) {
-            return n.offsetParent !== null || n === document.activeElement;
-          });
-      if (!items.length) return;
-      var first = items[0], last = items[items.length - 1];
-      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
-      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
-    }
-  });
-
-  /* ── reveals ────────────────────────────────────────────────────── */
-  var rv = document.querySelectorAll(".rv");
-  if (reduce || !("IntersectionObserver" in window)) {
-    rv.forEach(function (el) { el.classList.add("in"); });
-  } else {
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (en) {
-        if (en.isIntersecting) { en.target.classList.add("in"); io.unobserve(en.target); }
-      });
-    }, { rootMargin: "0px 0px -8% 0px", threshold: 0.06 });
-    rv.forEach(function (el) { io.observe(el); });
-  }
-
-  /* ── per-word mask reveal on the hero name ──────────────────────── */
-  /* the language switch rewrites h1.textContent, so this re-runs on every
-     langchange — otherwise the second language would render unsplit. */
-  function splitWords() {
-    document.querySelectorAll(".split").forEach(function (el) {
-      var words = (el.textContent || "").trim().split(/\s+/);
-      el.textContent = "";
-      words.forEach(function (word, i) {
-        var w = document.createElement("span"), inner = document.createElement("i");
-        w.className = "w";
-        inner.textContent = word;
-        inner.style.setProperty("--i", i);
-        w.appendChild(inner);
-        el.appendChild(w);
-        if (i < words.length - 1) el.appendChild(document.createTextNode(" "));
-      });
-      // two frames so the browser paints the hidden state before it transitions
-      el.classList.remove("in");
-      requestAnimationFrame(function () {
-        requestAnimationFrame(function () { el.classList.add("in"); });
-      });
-    });
-  }
-  if (!reduce) {
-    splitWords();
-    document.addEventListener("langchange", splitWords);
-  }
-
-  /* ── pointer-tracked glow on cards ──────────────────────────────── */
-  if (!reduce && window.matchMedia("(hover: hover)").matches) {
-    document.querySelectorAll(".glow").forEach(function (card) {
-      card.addEventListener("pointermove", function (e) {
-        var r = card.getBoundingClientRect();
-        card.style.setProperty("--mx", ((e.clientX - r.left) / r.width * 100) + "%");
-        card.style.setProperty("--my", ((e.clientY - r.top) / r.height * 100) + "%");
-      });
-    });
-  }
-
-  /* ── count-up on the rating chips ───────────────────────────────── */
-  if (!reduce && "IntersectionObserver" in window) {
-    var chipIo = new IntersectionObserver(function (entries) {
-      entries.forEach(function (en) {
-        if (!en.isIntersecting) return;
-        chipIo.unobserve(en.target);
-        var target = parseInt(en.target.textContent, 10);
-        if (isNaN(target)) return;
-        var start = null, dur = 900;
-        (function frame(t) {
-          if (start === null) start = t;
-          var k = Math.min((t - start) / dur, 1);
-          en.target.textContent = String(Math.round(target * (1 - Math.pow(1 - k, 3))));
-          if (k < 1) requestAnimationFrame(frame);
-        })(performance.now());
-      });
-    }, { threshold: 0.9 });
-    document.querySelectorAll(".chip b").forEach(function (b) { chipIo.observe(b); });
-  }
-
-  /* ── year ───────────────────────────────────────────────────────── */
-  (function year() {
-    var y = String(new Date().getFullYear());
-    document.querySelectorAll("#yr").forEach(function (n) { n.textContent = y; });
-    // keep the year correct after a language swap rewrites the footer line
-    document.addEventListener("langchange", function () {
-      document.querySelectorAll("#yr").forEach(function (n) { n.textContent = y; });
-    });
-  })();
-})();
-</script>
-</body>
-</html>
+  document.addEventListener("langchange", function ()I encountered an error doing what you asked. Could you try again?
